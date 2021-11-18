@@ -1,0 +1,154 @@
+Script started on 2021-11-18 06:06:10+00:00 [TERM="xterm-256color" TTY="/dev/pts/8" COLUMNS="80" LINES="32"]
+]0;
+########################
+
+I didn't do this assignment in order but I labeled them below.I think it's easier to clear up the review text before assigned them to each file
+I only take the first 1000 line form the amazon file because my laptop is so slow working with all of them.
+
+##########################
+
+lis@f6linux11: ~lis@f6linux11:~$ awk -F"\t" -v OFS='\t' '{print $2,$9,$14}' ~/amazon_reviews_us_Books_v1_02.tsv > a4/customer_id_helpfulness_review.txt
+]0;lis@f6linux11: ~lis@f6linux11:~$ cd a4
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ head -n 1000 customer_id_helpfulness_review.txt > top1000
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sort -n -r -t $'\t' -k 2 top1000 | head -n 101 > top101
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ tail -n 100 top101 > top_100
+
+
+
+(3)
+I create a file that has all the commands I need to remove stop words and I run the  command "sed -i -f removeStopWords top_100"
+I accidentally deleted it from my capture script
+
+
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ vi removeStopWords
+[?1049h[22;0;0t[>4;2m[?1h=[?2004h[1;32r[?12h[?12l[22;2t[22;1t[H[2J[?25l[32;1H"removeStopWords" 62L, 887C[2;1H[6n[2;1H  [1;1H[>c]10;?]11;?[1;1Hs/ actually / /gi
+s/ almost / /gi
+s/ also / /gi
+s/ although / /gi
+s/ always / /gi
+s/ any / /gi
+s/ became / /gi
+s/ become / /gi
+s/ could / /gi
+s/ did / /gi
+s/ done / /gi
+s/ does / /gi
+s/ each / /gi
+s/ either / /gi
+s/ else / /gi
+s/ from / /gi
+s/ hence / /gi
+s/ how / /gi
+s/ any / /gi
+s/ became / /gi
+s/ become / /gi
+s/ whose / /gi
+s/ will / /gi
+s/ within / /gi
+s/ without / /gi
+s/ yet / /gi
+s/  / /g
+s/<...\/>//g
+s/<...>//g
+s/\b[a-zA-Z]\{1,2\}\b//g
+s/[,\.:'"\(\)]/ /g[32;63H62,18[9CBot[31;18H[?25h[?25l
+
+
+(2)
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sed -r -i 's/ing[ ;.,]/ /g' top_100
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sed -r -i 's/ed[ ;.,]/ /g' top_100
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sed -r -i 's/s[ ;.,]/ /g' top_100
+
+
+(1)
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ awk -F"\t" '{print $1}' top_100 > 100id
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ for i in $(cat 100id); do grep "$i" top_100 | awk -F"\t" '{print $3}' > REVIEWS/$i.txt; done
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ cd REVIEWS
+]0;lis@f6linux11: ~/a4/REVIEWSlis@f6linux11:~/a4/REVIEWS$ vi 49435112.txt
+[?1049h[22;0;0t[>4;2m[?1h=[?2004h[1;32r[?12h[?12l[22;2t[22;1t[H[2J[?25l[32;1H"49435112.txt" 1L, 1829C[2;1H[6n[2;1H  [1;1H[>c]10;?]11;?[1;2Hsomeone came  Unit State fresh after college  mid-eightie   ponder question   nn[2;1Hew identity American identity  general quite often   pick   Huntington  book  suu[3;1Hmmer  2005 found    very enlighten   find  undeniable fact  origin  succes  Amerr[4;1Hica   nation  state lie British  protestant origin  origin set tone  work ethic  [5;1H legal system  democratic representation  find further confirmation  thesi  splee[6;1Hndid    The History  American People     British historian Paul Johnson  Samuel  [7;1HHuntington point until early sixtie immigrant arriv  USA were assist  governmentt[8;1H  assimilation proces  English language instruction were easily available  foundd[9;1H offensive premise command  english language essential  fully function   Americaa[10;1Hn  Since then     assimilation     bad word government  assistance start  look ll[11;1Hike discrimination  These day   name  diversity political correctnes  governmentt[12;1H program  counter-assimilation effect  bilingual education  Hispanic  example  oo[13;1Hnly postpone entry into English speak world  Compare fate  Hispanic youth receivv[14;1H education  Spanish  young children arriv Eastern Europe  Russia  Asia   bilinguu[15;1Hal education available  those kid  succesful transition into English speak worldd[16;1H  instantenou   While discus three major social theorie    Huntington clearly maa[17;1Hke  case     tomato soup garnishing    model  with tomato represent anglo-protess[18;1Htant core value garnishing provid  non-anglo immigrant group   Once hop for      [19;1Hmelt pot    model   really happen  seem   happen  however   ri cultural awareness[20;1H  individual ethnic group lack  assimilation program lead  toward     tos salad  [21;1H   type   society   book raise reader  awarene  social proceses take place  Unfoo[22;1Hrtunately   only  just that  sheer force  sociodemographic change    probably imm[23;1Hpossible  control anglo-protestant core  value get dillut disappear
+]0;
+
+
+
+
+
+
+
+
+
+
+(4)
+lis@f6linux11: ~lis@f6linux11:~$ awk -F "\",\"" '{print $6}' training.1600000.processed.noemoticon.csv | sed 's/^"//g'|sed 's/"$//g'| head -n 1000 > a4/twitter
+]0;lis@f6linux11: ~lis@f6linux11:~$ cd a4
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ for i in {1..100}; do sed -n "${i}p" twitter > tweet.$i.csv; done
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ vi myscript
+[?1049h[22;0;0t[>4;2m[?1h=[?2004h[1;32r[?12h[?12l[22;2t[22;1t[H[2J[?25l[32;1H"myscript" 6L, 166C[2;1H[6n[2;1H  [1;1H[>c]10;?]11;?[1;1H#!/usr/bin/bash
+common=`comm -12 <(tr " " "\n" < $1 | sort) <(tr " " "\n" < $2 | sort)| sort |unn[3;1Hiq -c | wc -l`
+if [ $common -gt 1 ] ;
+then[6;9Hecho `cat $2` >>$1 ;
+fi
+~                                                                               [9;1H~                                                                               [10;1H~                                                                               [11;1H~                                                                               [12;1H~                                                                               [13;1H~                                                                               [14;1H~                                                                               [15;1H~                                                                               [16;1H~                                                                               [17;1H~                                                                               [18;1H~                                                                               [19;1H~                                                                               [20;1H~                                                                               [21;1H~                                                                               [22;1H~                                                                               [23;1H~                                                                               [24;1H~                                                                               [25;1H~                                                                               [26;1H~                                                                               [27;1H~                                                                               [28;1H~                                                                               [29;1H~                                                                               [30;1H~                                                                               [31;1H~                                                                               [32;63H2,86[10CAll[3;6H[?25h[?25l[32;53H:[3;6H[32;1H[K[32;1H:[?2004h[?25hq[?25l[?2004l[23;2t[23;1t[32;1H[K[32;1H[?2004l[?1l>[?25h[>4;m[?1049l[23;0;0t]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ cat myscript
+#!/usr/bin/bash
+common=`comm -12 <(tr " " "\n" < $1 | sort) <(tr " " "\n" < $2 | sort)| sort |uniq -c | wc -l`
+if [ $common -gt 1 ] ;
+then 
+	echo `cat $2` >>$1 ; 
+fi
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ for i in *.csv; do ./myscript REVIEWS/48316556.txt $i; done
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ tail -n 10 REVIEWS/48316556.txt
+@Tatiana_K nope they didn't have it
+@januarycrimson Sorry, babe!! My fam annoys me too. Thankfully, they're asleep right now. Muahaha. *evil laugh*
+@Hollywoodheat I should have paid more attention when we covered photoshop in my webpage design class in undergrad
+wednesday my b-day! don't know what 2 do!!
+pray for me please, the ex is threatening to start sh** at my/our babies 1st Birthday party. what a jerk. and I still have a headache
+@makeherfamous hmm , do u really enjoy being with him ? if the problems are too constants u should think things more , find someone ulike
+Strider is a sick little puppy http://apps.facebook.com/dogbook/profile/view/5248435
+so rylee,grace...wana go steve's party or not?? SADLY SINCE ITS EASTER I WNT B ABLE 2 DO MUCH BUT OHH WELL.....
+hey, I actually won one of my bracket pools! Too bad it wasn't the one for money
+@stark YOU don't follow me, either and i work for you!
+
+
+
+
+
+
+
+(5)
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ for i in `ls REVIEWS/*.txt`; do for j in `ls tweet.*.csv`; do echo " comm -12 <(tr \" \" \"\n\" < $i | sort) <(tr \" \" \"\n\" < $j | sort) | sort |uniq -c | wc -l" ; done; done > commands.sh
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ time ~/parallel-20210922/src/parallel < commands.sh > output
+^C
+real	30m0.469s
+user	0m24.900s
+sys	3m42.510s
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ tr " " "\n" < top_100 | sort | uniq -c| sort -n -r > helpful
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ head -n 10 helpful
+  10317 
+    329 book
+     75 read
+     71 more
+     65 very
+     62 like
+     57 time
+     56 make
+     52 way
+     51 than
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sort -n -r -t $'\t' -k 2 top1000 | tail -n 100 > bottom_100
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sed -i -f removeStopWords bottom_100
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sed -r -i 's/ing[ ;.,]/ /g' bottom_100
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sed -r -i 's/ed[ ;.,]/ /g' bottom_100
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ sed -r -i 's/s[ ;.,]/ /g' bottom_100
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ tr " " "\n" < bottom_100 | sort | uniq -c| sort -n -r > unhelpful
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ head -n 10 unhelpful
+   4138 
+    176 book
+     77 read
+     37 just
+     34 like
+     32 good
+     30 more
+     29 very
+     29 author
+     28 time
+]0;lis@f6linux11: ~/a4lis@f6linux11:~/a4$ exit
+
+Script done on 2021-11-18 06:54:11+00:00 [COMMAND_EXIT_CODE="0"]
